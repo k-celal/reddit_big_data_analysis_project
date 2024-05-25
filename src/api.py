@@ -12,7 +12,7 @@ loaded_model = None
 tokenizer = None
 
 def load_data():
-    dataset = pd.read_csv('src/hepsiburada.csv')
+    dataset = pd.read_csv('data/hepsiburada.csv')
     target = dataset['Rating'].values.tolist()
     data = dataset['Review'].values.tolist()
     cutoff = int(len(data) * 0.80)
@@ -27,7 +27,7 @@ def load_tokenizer(data):
     return tokenizer
 
 def load_model_file():
-    return load_model('src/sentiment_analysisModel(99).h5')
+    return load_model('data/sentiment_analysisModel(99).h5')
 
 def initialize_model():
     global loaded_model, tokenizer

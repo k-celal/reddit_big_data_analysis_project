@@ -98,6 +98,8 @@ This notebook simulates the data collection and preprocessing pipeline. It inclu
 10. **Database Insertion**:
     - Inserts the processed data into a MongoDB collection.
 
+İşte `Setup and Installation` bölümünün güncellenmiş hali:
+
 ## Setup and Installation
 
 1. **Clone the repository**:
@@ -106,9 +108,10 @@ This notebook simulates the data collection and preprocessing pipeline. It inclu
    cd reddit-big-data-analysis
    ```
 
-2. **Install dependencies**:
+2. **Create and activate the conda environment**:
    ```bash
-   pip install -r requirements.txt
+   conda env create -f environment.yml
+   conda activate reddit_big_data_analysis
    ```
 
 3. **Download NLTK data**:
@@ -129,6 +132,7 @@ This notebook simulates the data collection and preprocessing pipeline. It inclu
    python api.py
    ```
 
+Bu adımları izleyerek gerekli bağımlılıkları yükleyebilir ve projeyi çalıştırabilirsiniz.
 ## Usage
 
 1. **Data Collection**:

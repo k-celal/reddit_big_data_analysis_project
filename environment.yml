@@ -1,0 +1,17 @@
+name: reddit_big_data_analysis
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.8
+  - pyspark
+  - nltk
+  - numpy
+  - pandas
+  - requests
+  - flask
+  - praw
+  - pymongo
+  - tensorflow
+  - pip:
+    - findspark

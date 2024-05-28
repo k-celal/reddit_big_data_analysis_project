@@ -4,7 +4,22 @@ import pandas as pd
 from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.utils import pad_sequences
 from tensorflow.keras.models import load_model
+from pyspark.sql import SparkSession
+import os 
+import sys
+import findspark 
 
+findspark.init()
+findspark.find()
+spark = SparkSession.builder \
+    .appName("Hepsiburada Veri Modeli") \
+    .config("spark.executorEnv.PYTHONHASHSEED", "0") \
+    .getOrCreate()
+
+
+os.environ['PYSPARK_PYTHON'] = sys.executable
+
+os.environ['PYSPARK_DRIVER_PYTHON'] = sys.executable
 app = Flask(__name__)
 
 # Global değişkenler
@@ -12,9 +27,10 @@ loaded_model = None
 tokenizer = None
 
 def load_data():
-    dataset = pd.read_csv('data/hepsiburada.csv')
-    target = dataset['Rating'].values.tolist()
-    data = dataset['Review'].values.tolist()
+    pandas_df = pd.read_csv('data/hepsiburada.csv')
+    dataset = spark.createDataFrame(pandas_df)
+    data = dataset.select("Review").rdd.flatMap(lambda x: x).collect()
+    target = dataset.select("Rating").rdd.flatMap(lambda x: x).collect()
     cutoff = int(len(data) * 0.80)
     x_train, x_test = data[:cutoff], data[cutoff:]
     y_train, y_test = target[:cutoff], target[cutoff:]
@@ -27,7 +43,7 @@ def load_tokenizer(data):
     return tokenizer
 
 def load_model_file():
-    return load_model('data/sentiment_analysisModel(99).h5')
+    return load_model('model/sentiment_analysisModel(99).h5')
 
 def initialize_model():
     global loaded_model, tokenizer
@@ -61,4 +77,4 @@ def predict_sentiment():
     return jsonify({'sentiment': sentiment})
 
 if __name__ == '__main__':
-    app.run(host='172.20.10.13',port='8080',debug=False)
+    app.run(host='127.0.0.1',port='8080',debug=False)
